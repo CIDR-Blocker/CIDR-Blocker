@@ -20,6 +20,9 @@ int WhitelistRowCount;
 
 bool CacheLoaded;
 bool WhitelistLoaded;
+bool Log;
+
+ConVar cLog;
 
 public Plugin myinfo = 
 {
@@ -60,8 +63,20 @@ public void OnTableCreate(Database db, DBResultSet results, const char[] error, 
 
 public void OnPluginStart()
 {
+	CreateConVar("sm_cidr_version", PLUGIN_VERSION, "CIDR Blocker Version", FCVAR_REPLICATED | FCVAR_SPONLY | FCVAR_DONTRECORD | FCVAR_NOTIFY);
+	
+	cLog = CreateConVar("sm_cidr_log", "1", "Enable rejected logging", FCVAR_NONE, true, 0.0, true, 1.0);
+	
+	Log = cLog.BoolValue;
+	cLog.AddChangeHook(OnLogChange);
+	
 	LoadToCache();
 	LoadToWhitelist();
+}
+
+public void OnLogChange(ConVar convar, const char[] oldValue, const char[] newValue)
+{
+	Log = cLog.BoolValue;
 }
 
 void LoadToCache()
@@ -100,8 +115,8 @@ public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] err
 		
 		ParseCIDR(Cache[i][0], iStart, iEnd);
 		
-		IntToString(iStart, Cache[i][1], sizeof Cache[][]);
-		IntToString(iEnd, Cache[i][2], sizeof Cache[][]);
+		IntToString(iStart, Cache[i][1], sizeof Cache[][]); //START
+		IntToString(iEnd, Cache[i][2], sizeof Cache[][]); //END
 	}
 	
 	CacheLoaded = true;
@@ -139,8 +154,34 @@ public void OnClientPostAdminCheck(int client)
 		int ID;
 		
 		if ((ID = IsInRange(IP)) != -1)
+		{
+			LogReject(client, ID);
 			KickClient(client, Cache[ID][3]);
+		}
 	}
+}
+
+void LogReject(int client, int ID)
+{
+	if (!Log) return;
+	
+	char Insert_Query[512], Name[32], Escaped_Name[65], IP[32], SteamID[32];
+	
+	GetClientName(client, Name, sizeof Name);
+	GetClientIP(client, IP, sizeof IP);
+	GetClientAuthId(client, AuthId_Steam2, SteamID, sizeof SteamID);
+	
+	hDB.Escape(Name, Escaped_Name, sizeof Escaped_Name);
+	
+	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%i')", IP, SteamID, Escaped_Name, ID);
+	
+	hDB.Query(SQL_OnLogReject, Insert_Query);
+}
+
+public void SQL_OnLogReject(Database db, DBResultSet results, const char[] error, any pData)
+{
+	if (results == null)
+		LogError("Failed to insert log: %s", error); 
 }
 
 bool IsInWhitelist(int client)
