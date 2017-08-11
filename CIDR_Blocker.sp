@@ -113,14 +113,37 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 	{
 		results.FetchRow();
 		
-		results.FetchString(0, Cache[i][0], sizeof Cache[][]); //TYPE
-		results.FetchString(1, Cache[i][1], sizeof Cache[][]); //IDENTITY
+		results.FetchString(0, Whitelist[i][0], sizeof Whitelist[][]); //TYPE
+		results.FetchString(1, Whitelist[i][1], sizeof Whitelist[][]); //IDENTITY
 	}
 }
 
 public void OnClientPostAdminCheck(int client)
 {
 	
+}
+
+bool IsInWhitelist(int client)
+{
+	char SteamID[32], IP[32];
+	
+	GetClientAuthId(client, AuthId_Steam2, SteamID, sizeof SteamID);
+	GetClientIP(client, IP, sizeof IP);
+	
+	for (int i = 1; i <= WhitelistRowCount; i++)
+	{
+		if (StrEqual(Whitelist[i][0], "steam"))
+		{
+			return StrEqual(Whitelist[i][1], SteamID);
+		}
+		
+		if (StrEqual(Whitelist[i][0], "ip"))
+		{
+			return StrEqual(Whitelist[i][1], IP);
+		}
+	}
+	
+	return false;
 }
 
 stock void ParseCIDR(const char[] sCIDR, int &iStart, int &iEnd)
