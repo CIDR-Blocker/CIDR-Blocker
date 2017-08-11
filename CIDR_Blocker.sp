@@ -18,6 +18,9 @@ char Whitelist[512][2][32]; //0:Type (steam, ip), 1:Identity
 int CacheRowCount;
 int WhitelistRowCount;
 
+bool CacheLoaded;
+bool WhitelistLoaded;
+
 public Plugin myinfo = 
 {
 	name = "CIDR Blocker",
@@ -34,8 +37,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	if (hDB == INVALID_HANDLE)
 		return APLRes_Failure;
 	
-	char ListCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_list` ( `id` INT NOT NULL AUTO_INCREMENT , `cidr` VARCHAR(32) NOT NULL , `kick_message` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
-	char WhitelistCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_whitelist` ( `id` INT NOT NULL AUTO_INCREMENT , `type` ENUM('steam','ip') NOT NULL , `identity` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
+	char ListCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_list` ( `id` INT NOT NULL AUTO_INCREMENT , `cidr` VARCHAR(32) NOT NULL , `kick_message` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
+	char WhitelistCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_whitelist` ( `id` INT NOT NULL AUTO_INCREMENT , `type` ENUM('steam','ip') NOT NULL , `identity` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
 	char LogCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_log` ( `id` INT NOT NULL AUTO_INCREMENT , `ip` VARBINARY(16) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(255) NOT NULL , `cidr` VARCHAR(32) NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`steamid`), INDEX (`ip`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
 	
 	SQL_SetCharset(hDB, "utf8mb4");
@@ -100,6 +103,8 @@ public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] err
 		IntToString(iStart, Cache[i][1], sizeof Cache[][]);
 		IntToString(iEnd, Cache[i][2], sizeof Cache[][]);
 	}
+	
+	CacheLoaded = true;
 }
 
 public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[] error, any pData)
@@ -116,10 +121,15 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 		results.FetchString(0, Whitelist[i][0], sizeof Whitelist[][]); //TYPE
 		results.FetchString(1, Whitelist[i][1], sizeof Whitelist[][]); //IDENTITY
 	}
+	
+	WhitelistLoaded = true;
 }
 
 public void OnClientPostAdminCheck(int client)
 {
+	if (!CacheLoaded || !WhitelistLoaded)
+		return;
+	
 	if (!IsInWhitelist(client))
 	{
 		char IP[32];
