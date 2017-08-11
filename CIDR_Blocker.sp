@@ -2,8 +2,8 @@
 
 #define DEBUG
 
-#define PLUGIN_AUTHOR ""
-#define PLUGIN_VERSION "0.00"
+#define PLUGIN_AUTHOR "Fishy"
+#define PLUGIN_VERSION "0.0.1"
 
 #include <sourcemod>
 #include <sdktools>
@@ -12,11 +12,11 @@
 
 public Plugin myinfo = 
 {
-	name = "",
+	name = "CIDR Blocker",
 	author = PLUGIN_AUTHOR,
-	description = "",
+	description = "Blocks CIDR (Classless Inter-Domain Routin) IP Ranges",
 	version = PLUGIN_VERSION,
-	url = ""
+	url = "https://keybase.io/rumblefrog"
 };
 
 public void OnPluginStart()
