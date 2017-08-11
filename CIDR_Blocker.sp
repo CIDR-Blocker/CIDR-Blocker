@@ -13,8 +13,10 @@
 Database hDB;
 
 char Cache[512][4][255]; //0:CIDR, 1:START, 2:END, 3:KICK_MESSAGE
+char Whitelist[512][2][32]; //0:Type (steam, ip), 1:Identity
 
-int RowCount;
+int CacheRowCount;
+int WhitelistRowCount;
 
 public Plugin myinfo = 
 {
@@ -34,7 +36,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	
 	char ListCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_list` ( `id` INT NOT NULL AUTO_INCREMENT , `cidr` VARCHAR(32) NOT NULL , `kick_message` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
 	char WhitelistCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_whitelist` ( `id` INT NOT NULL AUTO_INCREMENT , `type` ENUM('steam','ip') NOT NULL , `identity` VARCHAR(255) NOT NULL , `comment` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
-	char LogCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_log` ( `id` INT NOT NULL AUTO_INCREMENT , `ip` VARBINARY(16) BINARY NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(255) NOT NULL , `cidr` VARCHAR(32) NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`steamid`), INDEX (`ip`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
+	char LogCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_log` ( `id` INT NOT NULL AUTO_INCREMENT , `ip` VARBINARY(16) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(255) NOT NULL , `cidr` VARCHAR(32) NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`steamid`), INDEX (`ip`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
 	
 	SQL_SetCharset(hDB, "utf8mb4");
 			
@@ -56,6 +58,7 @@ public void OnTableCreate(Database db, DBResultSet results, const char[] error, 
 public void OnPluginStart()
 {
 	LoadToCache();
+	LoadToWhitelist();
 }
 
 void LoadToCache()
@@ -67,14 +70,23 @@ void LoadToCache()
 	hDB.Query(SQL_OnLoadToCache, Select_Query);
 }
 
+void LoadToWhitelist()
+{
+	char Select_Query[512];
+	
+	Format(Select_Query, sizeof Select_Query, "SELECT `type`, `identity` FROM `cidr_whitelist`");
+	
+	hDB.Query(SQL_OnLoadToWhitelist, Select_Query);
+}
+
 public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] error, any pData)
 {
 	if (results == null)
-		SetFailState("Failed to fetch broadcasts: %s", error); 
+		SetFailState("Failed to fetch cache: %s", error); 
 		
-	RowCount = results.RowCount;
+	CacheRowCount = results.RowCount;
 	
-	for (int i = 1; i <= RowCount; i++)
+	for (int i = 1; i <= CacheRowCount; i++)
 	{
 		results.FetchRow();
 		
@@ -87,6 +99,22 @@ public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] err
 		
 		IntToString(iStart, Cache[i][1], sizeof Cache[][]);
 		IntToString(iEnd, Cache[i][2], sizeof Cache[][]);
+	}
+}
+
+public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[] error, any pData)
+{
+	if (results == null)
+		SetFailState("Failed to fetch whitelist: %s", error); 
+		
+	WhitelistRowCount = results.RowCount;
+	
+	for (int i = 1; i <= WhitelistRowCount; i++)
+	{
+		results.FetchRow();
+		
+		results.FetchString(0, Cache[i][0], sizeof Cache[][]); //TYPE
+		results.FetchString(1, Cache[i][1], sizeof Cache[][]); //IDENTITY
 	}
 }
 
