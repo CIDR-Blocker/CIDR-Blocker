@@ -120,7 +120,17 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 
 public void OnClientPostAdminCheck(int client)
 {
-	
+	if (!IsInWhitelist(client))
+	{
+		char IP[32];
+		
+		GetClientIP(client, IP, sizeof IP);
+		
+		int ID;
+		
+		if ((ID = IsInRange(IP)) != -1)
+			KickClient(client, Cache[ID][3]);
+	}
 }
 
 bool IsInWhitelist(int client)
@@ -144,6 +154,22 @@ bool IsInWhitelist(int client)
 	}
 	
 	return false;
+}
+
+int IsInRange(const char[] IP)
+{
+	int iNet = NetAddr2Long(IP), iStart, iEnd;
+	
+	for (int i = 1; i <= CacheRowCount; i++)
+	{
+		iStart = StringToInt(Cache[i][1]);
+		iEnd = StringToInt(Cache[i][2]);
+		
+		if (iStart <= iNet && iNet <= iEnd)
+			return i;
+	}
+	
+	return -1;
 }
 
 stock void ParseCIDR(const char[] sCIDR, int &iStart, int &iEnd)
