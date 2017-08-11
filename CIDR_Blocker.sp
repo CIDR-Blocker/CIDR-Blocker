@@ -6,7 +6,6 @@
 #define PLUGIN_VERSION "0.0.1"
 
 #include <sourcemod>
-#include <sdktools>
 
 #pragma newdecls required
 
@@ -173,7 +172,7 @@ void LogReject(int client, int ID)
 	
 	hDB.Escape(Name, Escaped_Name, sizeof Escaped_Name);
 	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%i')", IP, SteamID, Escaped_Name, ID);
+	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%s')", IP, SteamID, Escaped_Name, Cache[ID][0]);
 	
 	hDB.Query(SQL_OnLogReject, Insert_Query);
 }
