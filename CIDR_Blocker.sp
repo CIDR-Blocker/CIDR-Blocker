@@ -12,6 +12,10 @@
 
 Database hDB;
 
+char Cache[512][4][255]; //0:CIDR, 1:START, 2:END, 3:KICK_MESSAGE
+
+int RowCount;
+
 public Plugin myinfo = 
 {
 	name = "CIDR Blocker",
@@ -51,5 +55,80 @@ public void OnTableCreate(Database db, DBResultSet results, const char[] error, 
 
 public void OnPluginStart()
 {
+	LoadToCache();
+}
+
+void LoadToCache()
+{
+	char Select_Query[512];
 	
+	Format(Select_Query, sizeof Select_Query, "SELECT `cidr`, `kick_message` FROM `cidr_list`");
+	
+	hDB.Query(SQL_OnLoadToCache, Select_Query);
+}
+
+public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] error, any pData)
+{
+	if (results == null)
+		SetFailState("Failed to fetch broadcasts: %s", error); 
+		
+	RowCount = results.RowCount;
+	
+	for (int i = 1; i <= RowCount; i++)
+	{
+		results.FetchRow();
+		
+		results.FetchString(0, Cache[i][0], sizeof Cache[][]); //CIDR
+		results.FetchString(1, Cache[i][3], sizeof Cache[][]); //KICK_MESSAGE
+		
+		int iStart, iEnd;
+		
+		ParseCIDR(Cache[i][0], iStart, iEnd);
+		
+		IntToString(iStart, Cache[i][1], sizeof Cache[][]);
+		IntToString(iEnd, Cache[i][2], sizeof Cache[][]);
+	}
+}
+
+public void OnClientPostAdminCheck(int client)
+{
+	
+}
+
+stock void ParseCIDR(const char[] sCIDR, int &iStart, int &iEnd)
+{
+    char Pieces[2][32];
+    
+    ExplodeString(sCIDR, "/", Pieces, sizeof Pieces, sizeof Pieces[]);
+    int baseip = NetAddr2Long(Pieces[0]);
+    int prefix = StringToInt(Pieces[1]);
+    
+    if(prefix == 0) {
+        LogError("CIDR prefix 0, clamping to 32. %s", sCIDR);
+        prefix = 32;
+    }
+    
+    int shift = 32 - prefix;
+    int mask = (1 << shift) - 1;
+    int start = baseip >> shift << shift;
+    int end = start | mask;
+    
+    iStart = start;
+    iEnd = end;
+}
+
+stock int NetAddr2Long(const char[] ip)
+{
+    char Pieces[4][16];
+    int nums[4];
+
+    if (ExplodeString(ip, ".", Pieces, sizeof Pieces, sizeof Pieces[]) != 4)
+        return 0;
+    
+    nums[0] = StringToInt(Pieces[0]);
+    nums[1] = StringToInt(Pieces[1]);
+    nums[2] = StringToInt(Pieces[2]);
+    nums[3] = StringToInt(Pieces[3]);
+
+    return ((nums[0] << 24) | (nums[1] << 16) | (nums[2] << 8) | nums[3]);
 }
