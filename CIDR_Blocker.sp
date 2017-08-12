@@ -178,11 +178,8 @@ public Action CmdWhitelist(int client, int args)
 		GetCmdArg(i, sArg, sizeof sArg);
 		Format(Comment, sizeof Comment, "%s %s", Comment, sArg);
 	}
-	
-	if (StrContains(ID, ".") != -1)
-		Type = "ip";
-	else
-		Type = "steam";
+		
+	Type = (StrContains(ID, ".") != -1) ? "ip" : "steam";
 		
 	hDB.Escape(Comment, Escaped_Comment, sizeof Escaped_Comment);
 	
