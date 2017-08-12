@@ -69,6 +69,8 @@ public void OnPluginStart()
 	Log = cLog.BoolValue;
 	cLog.AddChangeHook(OnLogChange);
 	
+	RegAdminCmd("sm_cidr_whitelist", CmdWhitelist, ADMFLAG_CHEATS);
+	
 	LoadToCache();
 	LoadToWhitelist();
 }
@@ -158,6 +160,49 @@ public void OnClientPostAdminCheck(int client)
 			KickClient(client, Cache[ID][3]);
 		}
 	}
+}
+
+public Action CmdWhitelist(int client, int args)
+{
+	if (args < 1)
+	{
+		ReplyToCommand(client, "sm_cidir_whitelist <steamid/ip> <comment>");
+		return Plugin_Handled;
+	}
+	
+	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Escaped_Comment[511], Type[32];
+	
+	GetCmdArg(1, ID, sizeof ID);
+	
+	for (int i = 2; i <= args; i++)
+	{
+		GetCmdArg(i, sArg, sizeof sArg);
+		Format(Comment, sizeof Comment, "%s %s", Comment, sArg);
+	}
+	
+	if (StrContains(ID, ".") != -1)
+		Type = "ip";
+	else
+		Type = "steam";
+		
+	hDB.Escape(Comment, Escaped_Comment, sizeof Escaped_Comment);
+	
+	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES ('%s', '%s', '%s')", Type, ID, Escaped_Comment);
+	
+	hDB.Query(SQL_OnCmdWhitelist, Insert_Query);
+	
+	return Plugin_Handled;
+}
+
+public void SQL_OnCmdWhitelist(Database db, DBResultSet results, const char[] error, any pData)
+{
+	if (results == null)
+	{
+		LogError("Failed to insert log: %s", error); 
+		return;
+	}
+	
+	LoadToWhitelist();
 }
 
 void LogReject(int client, int ID)
