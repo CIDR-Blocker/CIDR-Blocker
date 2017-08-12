@@ -46,9 +46,16 @@ Blocks CIDR (Classless Inter-Domain Routing) IP Ranges
 1. Extract **CIDR_Blocker.smx** to **/addons/sourcemod/plugins**
 2. Create **cidr_blocker** entry in your database.cfg
 
+
 # Download 
 
 Download the latest version from the [release](https://github.com/RumbleFrog/CIDR-Blocker/releases) page
+
+# Resources
+
+- ASN Blocklist - https://www.enjen.net/asn-blocklist/
+
+- Pre-made SQL script of most datacenters - https://github.com/RumbleFrog/CIDR-Blocker/blob/master/imports/datacenters.sql
 
 # License
 
