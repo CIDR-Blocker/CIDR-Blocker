@@ -1,0 +1,37 @@
+language: c
+
+env:
+    - SMVERSION=1.8
+
+matrix:
+    fast_finish: true
+    
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install gcc-multilib
+    - sudo apt-get install lynx
+    - sudo apt-get install lib32stdc++6
+
+before_script:
+    - SMLATEST=`curl "https://www.sourcemod.net/smdrop/$SMVERSION/sourcemod-latest-linux"`
+    - SMPACKAGE="https://www.sourcemod.net/smdrop/$SMVERSION/$SMLATEST"
+    - wget $SMPACKAGE
+    - tar -xzf $(basename "$SMPACKAGE")
+    - cp CIDR_Blocker.sp addons/sourcemod/scripting/
+    - cd addons/sourcemod/scripting/
+    - chmod +x spcomp
+    - chmod +x compile.sh
+    
+script: 
+    - ./compile.sh CIDR_Blocker.sp   
+  
+deploy:
+  provider: releases
+  api_key: "$githubkey"
+  file: "$TRAVIS_BUILD_DIR/addons/sourcemod/scripting/compiled/CIDR_Blocker.smx"
+  skip_cleanup: true
+  on:
+    tags: true
+
+notifications:
+  email: false
