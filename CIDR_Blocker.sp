@@ -1,7 +1,5 @@
 #pragma semicolon 1
 
-#define DEBUG
-
 #define PLUGIN_AUTHOR "Fishy"
 #define PLUGIN_VERSION "0.0.1"
 
