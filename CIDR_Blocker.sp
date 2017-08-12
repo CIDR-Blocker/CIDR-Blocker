@@ -198,7 +198,7 @@ public void SQL_OnCmdWhitelist(Database db, DBResultSet results, const char[] er
 {
 	if (results == null)
 	{
-		LogError("Failed to insert log: %s", error); 
+		LogError("Failed to insert whitelist: %s", error); 
 		return;
 	}
 	
