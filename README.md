@@ -9,37 +9,37 @@ Blocks CIDR (Classless Inter-Domain Routing) IP Ranges
 
 ### CIDR_LIST
 
-**id** Auto incremental ID (**Filled in automatically**)
+**id** - Auto incremental ID (**Filled in automatically**)
 
-**cidr** CIDR to block
+**cidr** - CIDR to block
 
-**kick_message** Message to display when kicked
+**kick_message** - Message to display when kicked
 
-**comment** Helps you keep track
+**comment** - Helps you keep track
 
 ### CIDR_WHITELIST
 
-**id** Auto incremental ID (**Filled in automatically**)
+**id** - Auto incremental ID (**Filled in automatically**)
 
-**type** Whitelist type (**steam** OR **ip**)
+**type** - Whitelist type (**steam** OR **ip**)
 
-**identity** Depending on the whitelist type (**steamid32** OR **IP**)
+**identity** - Depending on the whitelist type (**steamid32** OR **IP**)
 
-**comment** Helps you keep track
+**comment** - Helps you keep track
 
 ### CIDR_LOG (Used when `sm_cidr_log` is **1.0**)
 
-**id** Auto incremental ID (**Filled in automatically**)
+**id** - Auto incremental ID (**Filled in automatically**)
 
-**ip** Client's connecting IP
+**ip** - Client's connecting IP
 
-**steamid** Client's SteamID32
+**steamid** - Client's SteamID32
 
-**name** Client's connecting name
+**name** - Client's connecting name
 
-**cidr** CIDR that was triggered
+**cidr** - CIDR that was triggered
 
-**time** Time it was blocked
+**time** - Time it was blocked
 
 # Installation
 
@@ -52,4 +52,4 @@ Download the latest version from the [release](https://github.com/RumbleFrog/CID
 
 # License
 
-GPL 3.0
+GPL-3.0
