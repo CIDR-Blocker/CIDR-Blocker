@@ -24,11 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sourcemod>
 
 #pragma newdecls required
-#pragma dynamic 1310720
+#pragma dynamic 3932160 //3 * 5120 Cap
 
 Database hDB;
 
-char Cache[5120][4][64]; //0:CIDR, 1:START, 2:END, 3:KICK_MESSAGE
+char Cache[10240][4][64]; //0:CIDR, 1:START, 2:END, 3:KICK_MESSAGE
 char Whitelist[512][2][32]; //0:Type (steam, ip), 1:Identity
 
 int CacheRowCount;
