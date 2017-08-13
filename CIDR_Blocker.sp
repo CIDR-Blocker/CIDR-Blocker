@@ -19,22 +19,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.0"
+#define PLUGIN_VERSION "1.1.0"
 
 #include <sourcemod>
 
 #pragma newdecls required
-#pragma dynamic 3932160 //3 * 5120 Cap
 
 Database hDB;
 
-char Cache[10240][4][64]; //0:CIDR, 1:START, 2:END, 3:KICK_MESSAGE
 char Whitelist[512][2][32]; //0:Type (steam, ip), 1:Identity
 
-int CacheRowCount;
 int WhitelistRowCount;
 
-bool CacheLoaded;
 bool WhitelistLoaded;
 bool Log;
 
@@ -88,22 +84,12 @@ public void OnPluginStart()
 	
 	RegAdminCmd("sm_cidr_whitelist", CmdWhitelist, ADMFLAG_CHEATS);
 	
-	LoadToCache();
 	LoadToWhitelist();
 }
 
 public void OnLogChange(ConVar convar, const char[] oldValue, const char[] newValue)
 {
 	Log = cLog.BoolValue;
-}
-
-void LoadToCache()
-{
-	char Select_Query[512];
-	
-	Format(Select_Query, sizeof Select_Query, "SELECT `cidr`, `kick_message` FROM `cidr_list`");
-	
-	hDB.Query(SQL_OnLoadToCache, Select_Query);
 }
 
 void LoadToWhitelist()
@@ -113,31 +99,6 @@ void LoadToWhitelist()
 	Format(Select_Query, sizeof Select_Query, "SELECT `type`, `identity` FROM `cidr_whitelist`");
 	
 	hDB.Query(SQL_OnLoadToWhitelist, Select_Query);
-}
-
-public void SQL_OnLoadToCache(Database db, DBResultSet results, const char[] error, any pData)
-{
-	if (results == null)
-		SetFailState("Failed to fetch cache: %s", error); 
-		
-	CacheRowCount = results.RowCount;
-	
-	for (int i = 1; i <= CacheRowCount; i++)
-	{
-		results.FetchRow();
-		
-		results.FetchString(0, Cache[i][0], sizeof Cache[][]); //CIDR
-		results.FetchString(1, Cache[i][3], sizeof Cache[][]); //KICK_MESSAGE
-		
-		int iStart, iEnd;
-		
-		ParseCIDR(Cache[i][0], iStart, iEnd);
-		
-		IntToString(iStart, Cache[i][1], sizeof Cache[][]); //START
-		IntToString(iEnd, Cache[i][2], sizeof Cache[][]); //END
-	}
-	
-	CacheLoaded = true;
 }
 
 public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[] error, any pData)
@@ -160,22 +121,40 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 
 public void OnClientPostAdminCheck(int client)
 {
-	if (!CacheLoaded || !WhitelistLoaded)
+	if (!WhitelistLoaded)
 		return;
 	
 	if (!IsInWhitelist(client))
 	{
-		char IP[32];
+		char IP[32], Select_Query[512];
 		
 		GetClientIP(client, IP, sizeof IP);
 		
-		int ID;
+		Format(Select_Query, sizeof Select_Query, "SELECT `cidr`, `kick_message` FROM cidr_list WHERE INET_ATON('%s') BETWEEN (INET_ATON(SUBSTRING_INDEX(`cidr`, '/', 1)) & 0xffffffff ^ ((0x1 << ( 32 - SUBSTRING_INDEX(`cidr`, '/', -1))  ) -1 )) AND (INET_ATON(SUBSTRING_INDEX(`cidr`, '/', 1)) | ((0x100000000 >> SUBSTRING_INDEX(`cidr`, '/', -1) ) -1 )) LIMIT 1", IP);
 		
-		if ((ID = IsInRange(IP)) != -1)
-		{
-			LogReject(client, ID);
-			KickClient(client, Cache[ID][3]);
-		}
+		hDB.Query(SQL_OnCIDRFetch, Select_Query, client);
+	}
+}
+
+public void SQL_OnCIDRFetch(Database db, DBResultSet results, const char[] error, any pData)
+{
+	if (results == null)
+	{
+		LogError("Failed to fetch CIDR: %s", error); 
+		return;
+	}
+	
+	if (results.RowCount > 0)
+	{
+		char CIDR[32], Kick_Message[64];
+		
+		results.FetchRow();
+
+		results.FetchString(0, CIDR, sizeof CIDR);
+		results.FetchString(1, Kick_Message, sizeof Kick_Message);
+		
+		LogReject(pData, CIDR);
+		KickClient(pData, Kick_Message);
 	}
 }
 
@@ -219,7 +198,7 @@ public void SQL_OnCmdWhitelist(Database db, DBResultSet results, const char[] er
 	LoadToWhitelist();
 }
 
-void LogReject(int client, int ID)
+void LogReject(int client, const char[] CIDR)
 {
 	if (!Log) return;
 	
@@ -231,7 +210,7 @@ void LogReject(int client, int ID)
 	
 	hDB.Escape(Name, Escaped_Name, sizeof Escaped_Name);
 	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%s')", IP, SteamID, Escaped_Name, Cache[ID][0]);
+	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%s')", IP, SteamID, Escaped_Name, CIDR);
 	
 	hDB.Query(SQL_OnLogReject, Insert_Query);
 }
@@ -263,58 +242,4 @@ bool IsInWhitelist(int client)
 	}
 	
 	return false;
-}
-
-int IsInRange(const char[] IP)
-{
-	int iNet = NetAddr2Long(IP), iStart, iEnd;
-	
-	for (int i = 1; i <= CacheRowCount; i++)
-	{
-		iStart = StringToInt(Cache[i][1]);
-		iEnd = StringToInt(Cache[i][2]);
-		
-		if (iStart <= iNet && iNet <= iEnd)
-			return i;
-	}
-	
-	return -1;
-}
-
-stock void ParseCIDR(const char[] sCIDR, int &iStart, int &iEnd)
-{
-    char Pieces[2][32];
-    
-    ExplodeString(sCIDR, "/", Pieces, sizeof Pieces, sizeof Pieces[]);
-    int baseip = NetAddr2Long(Pieces[0]);
-    int prefix = StringToInt(Pieces[1]);
-    
-    if(prefix == 0) {
-        LogError("CIDR prefix 0, clamping to 32. %s", sCIDR);
-        prefix = 32;
-    }
-    
-    int shift = 32 - prefix;
-    int mask = (1 << shift) - 1;
-    int start = baseip >> shift << shift;
-    int end = start | mask;
-    
-    iStart = start;
-    iEnd = end;
-}
-
-stock int NetAddr2Long(const char[] ip)
-{
-    char Pieces[4][16];
-    int nums[4];
-
-    if (ExplodeString(ip, ".", Pieces, sizeof Pieces, sizeof Pieces[]) != 4)
-        return 0;
-    
-    nums[0] = StringToInt(Pieces[0]);
-    nums[1] = StringToInt(Pieces[1]);
-    nums[2] = StringToInt(Pieces[2]);
-    nums[3] = StringToInt(Pieces[3]);
-
-    return ((nums[0] << 24) | (nums[1] << 16) | (nums[2] << 8) | nums[3]);
 }
