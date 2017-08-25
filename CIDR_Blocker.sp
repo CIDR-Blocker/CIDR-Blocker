@@ -166,7 +166,7 @@ public Action CmdWhitelist(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Escaped_Comment[511], Type[32];
+	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Escaped_ID[65], Escaped_Comment[511], Type[32];
 	
 	GetCmdArg(1, ID, sizeof ID);
 	
@@ -177,10 +177,11 @@ public Action CmdWhitelist(int client, int args)
 	}
 		
 	Type = (StrContains(ID, ".") != -1) ? "ip" : "steam";
-		
+	
+	hDB.Escape(ID, Escaped_ID, sizeof Escaped_ID);
 	hDB.Escape(Comment, Escaped_Comment, sizeof Escaped_Comment);
 	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES ('%s', '%s', '%s')", Type, ID, Escaped_Comment);
+	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES ('%s', '%s', '%s')", Type, Escaped_ID, Escaped_Comment);
 	
 	hDB.Query(SQL_OnCmdWhitelist, Insert_Query);
 	
