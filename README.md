@@ -1,4 +1,4 @@
-# CIDR Blocker [![Build Status](https://travis-ci.org/RumbleFrog/CIDR-Blocker.svg?branch=master)](https://travis-ci.org/RumbleFrog/CIDR-Blocker)
+# CIDR Blocker [![Build Status](https://travis-ci.org/RumbleFrog/CIDR-Blocker.svg?branch=master)](https://travis-ci.org/RumbleFrog/CIDR-Blocker) [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 Blocks CIDR (Classless Inter-Domain Routing) IP Ranges
 
 # ConVar
