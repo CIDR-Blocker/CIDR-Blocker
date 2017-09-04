@@ -232,14 +232,12 @@ bool IsInWhitelist(int client)
 	for (int i = 1; i <= WhitelistRowCount; i++)
 	{
 		if (StrEqual(Whitelist[i][0], "steam"))
-		{
-			return StrEqual(Whitelist[i][1], SteamID);
-		}
+			if (StrEqual(Whitelist[i][1], SteamID))
+				return true;
 		
 		if (StrEqual(Whitelist[i][0], "ip"))
-		{
-			return StrEqual(Whitelist[i][1], IP);
-		}
+			if (StrEqual(Whitelist[i][1], IP))
+				return true;
 	}
 	
 	return false;
