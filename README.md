@@ -7,51 +7,52 @@
 </p>
 
 <p align="center">
-	<a href="https://travis-ci.org/RumbleFrog/CIDR-Blocker"><img alt="Travis CI Status" src="https://travis-ci.org/RumbleFrog/CIDR-Blocker.svg?branch=master"></a>
-	<img alt="Downloads" src="https://img.shields.io/github/downloads/RumbleFrog/CIDR-Blocker/total.svg">
+	<a href="https://travis-ci.org/RumbleFrog/CIDR-Blocker"><img alt="Travis CI Status" src="https://img.shields.io/travis/RumbleFrog/CIDR-Blocker.svg?style=flat-square"></a>
+	<a href="https://github.com/RumbleFrog/CIDR-Blocker/issues"><img alt="Issues" src="https://img.shields.io/github/issues/RumbleFrog/CIDR-Blocker.svg?style=flat-square"></a>
+	<img alt="Downloads" src="https://img.shields.io/github/downloads/RumbleFrog/CIDR-Blocker/total.svg?style=flat-square">
 </p>
 
 ---
 
 # ConVar
 
-**sm_cidr_log** Enable blocked logging [Default: **1.0**] (Min: **0.0**) (Max: **1.0**)
+- **sm_cidr_log** Enable blocked logging [Default: **1.0**] (Min: **0.0**) (Max: **1.0**)
 
 # Database Structure
 
 ### CIDR_LIST
 
-**id** - Auto incremental ID (**Filled in automatically**)
+- **id** - Auto incremental ID (**Filled in automatically**)
 
-**cidr** - CIDR to block
+- **cidr** - CIDR to block
 
-**kick_message** - Message to display when kicked
+- **kick_message** - Message to display when kicked
 
-**comment** - Helps you keep track
+- **comment** - Helps you keep track
 
 ### CIDR_WHITELIST
 
-**id** - Auto incremental ID (**Filled in automatically**)
+- **id** - Auto incremental ID (**Filled in automatically**)
 
-**type** - Whitelist type (**steam** OR **ip**)
+- **type** - Whitelist type (**steam** OR **ip**)
 
-**identity** - Depending on the whitelist type (**steamid32** OR **IP**)
+- **identity** - Depending on the whitelist type (**steamid32** OR **IP**)
 
-**comment** - Helps you keep track
+- **comment** - Helps you keep track
 
 ### CIDR_LOG (Used when `sm_cidr_log` is **1.0**)
 
-**id** - Auto incremental ID (**Filled in automatically**)
+- **id** - Auto incremental ID (**Filled in automatically**)
 
-**ip** - Client's connecting IP
+- **ip** - Client's connecting IP
 
-**steamid** - Client's SteamID32
+- **steamid** - Client's SteamID32
 
-**name** - Client's connecting name
+- **name** - Client's connecting name
 
-**cidr** - CIDR that was triggered
+- **cidr** - CIDR that was triggered
 
-**time** - Time it was blocked
+- **time** - Time it was blocked
 
 # Installation
 
@@ -73,3 +74,5 @@ Download the latest version from the [release](https://github.com/RumbleFrog/CID
 # License
 
 GPL-3.0
+
+Icon made by <a href="http://www.freepik.com/" target="_blank">Freepik</a> from <a href="http://www.flaticon.com/" target="_blank">http://www.flaticon.com/</a>
