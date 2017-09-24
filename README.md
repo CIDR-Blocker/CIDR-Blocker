@@ -58,7 +58,7 @@
 
 1. Extract **CIDR_Blocker.smx** to **/addons/sourcemod/plugins**
 2. Create **cidr_blocker** entry in your database.cfg
-3. (Optional) Import https://github.com/RumbleFrog/CIDR-Blocker/blob/master/imports/datacenters.sql into `cidr_list` table
+3. (Optional | Recommended) Import https://github.com/RumbleFrog/CIDR-Blocker/blob/master/imports/datacenters.sql (LARGE FILE) into `cidr_list` table using `mysql -u username -p database_name < datacenters.sql`
 
 
 # Download 
