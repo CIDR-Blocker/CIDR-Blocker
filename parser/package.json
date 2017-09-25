@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "csvtojson": "^1.1.7",
+    "squel": "^5.11.1"
+  }
+}
