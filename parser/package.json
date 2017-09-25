@@ -2,6 +2,7 @@
   "dependencies": {
     "csvtojson": "^1.1.7",
     "ip-subnet-calculator": "^1.1.8",
+    "jsesc": "^2.5.1",
     "squel": "^5.11.1"
   }
 }

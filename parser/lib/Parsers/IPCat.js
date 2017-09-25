@@ -1,5 +1,6 @@
 const csv = require('csvtojson');
 const ISC = require('ip-subnet-calculator');
+const jsesc = require('jsesc');
 
 function IPCat(file) {
   this.file = file;
@@ -13,7 +14,7 @@ IPCat.prototype.parse = function (callback) {
     .on('csv', (row) => {
       let Blocks = ISC.calculate(row[0], row[1]);
       Blocks.forEach((Block) => {
-        this.buffer.push({cidr:Block.ipLowStr + '/' + Block.prefixSize, comment:row[2]});
+        this.buffer.push({cidr:Block.ipLowStr + '/' + Block.prefixSize, comment:jsesc(row[2])});
       })
     })
     .on('end', (error) => {
