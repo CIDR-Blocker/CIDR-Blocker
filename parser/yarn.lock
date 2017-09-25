@@ -13,6 +13,10 @@ first-chunk-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/first-chunk-stream/-/first-chunk-stream-1.0.0.tgz#59bfb50cd905f60d7c394cd3d9acaab4e6ad934e"
 
+ip-subnet-calculator@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/ip-subnet-calculator/-/ip-subnet-calculator-1.1.8.tgz#9bc02e233d5a43efae7adeb45f6a694b82b970fd"
+
 is-utf8@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
