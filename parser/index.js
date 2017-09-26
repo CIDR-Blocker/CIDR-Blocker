@@ -11,5 +11,8 @@ new Parser.IPCat('storage/datacenters.csv').parse((err, obj) => {
     .setFieldsRows(IPCat)
     .toString();
 
+  let Plain = IPCat.map(block => block.cidr);
+
   fs.writeFileSync('storage/parsed.sql', SQL);
+  fs.writeFileSync('storage/parsed.json', JSON.stringify(Plain));
 });
