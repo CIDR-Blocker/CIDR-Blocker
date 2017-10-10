@@ -1,5 +1,6 @@
 const Parser = require('./lib/Parsers');
 const squel = require('squel');
+const request = require('request');
 const fs = require('fs');
 
 new Parser.IPCat('storage/datacenters.csv').parse((err, obj) => {
