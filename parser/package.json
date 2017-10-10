@@ -6,6 +6,9 @@
     "request": "^2.83.0",
     "squel": "^5.11.1"
   },
+  "scripts": {
+    "start": "node index.js"
+  },
   "name": "parser",
   "version": "1.0.0",
   "description": "Parses collections and outputs single SQL file",
