@@ -5,5 +5,11 @@
     "jsesc": "^2.5.1",
     "request": "^2.83.0",
     "squel": "^5.11.1"
-  }
+  },
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "Parses collections and outputs single SQL file",
+  "main": "index.js",
+  "author": "RumbleFrog",
+  "license": "MIT"
 }
