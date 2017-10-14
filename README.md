@@ -7,10 +7,10 @@
 </p>
 
 <p align="center">
-	<a href="https://travis-ci.org/RumbleFrog/CIDR-Blocker"><img alt="Travis CI Status" src="https://img.shields.io/travis/RumbleFrog/CIDR-Blocker.svg?style=flat-square"></a>
-	<a href="https://github.com/RumbleFrog/CIDR-Blocker/issues"><img alt="Issues" src="https://img.shields.io/github/issues/RumbleFrog/CIDR-Blocker.svg?style=flat-square"></a>
+	<a href="https://travis-ci.org/CIDR-Blocker/CIDR-Blocker"><img alt="Travis CI Status" src="https://img.shields.io/travis/CIDR-Blocker/CIDR-Blocker.svg?style=flat-square"></a>
+	<a href="https://github.com/CIDR-Blocker/CIDR-Blocker/issues"><img alt="Issues" src="https://img.shields.io/github/issues/CIDR-Blocker/CIDR-Blocker.svg?style=flat-square"></a>
 	<a href="https://discord.gg/gh8uMa9"><img src="https://img.shields.io/discord/364849839508553730.svg?style=flat-square"></a>
-	<img alt="Downloads" src="https://img.shields.io/github/downloads/RumbleFrog/CIDR-Blocker/total.svg?style=flat-square">
+	<img alt="Downloads" src="https://img.shields.io/github/downloads/CIDR-Blocker/CIDR-Blocker/total.svg?style=flat-square">
 </p>
 
 ---
