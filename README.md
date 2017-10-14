@@ -59,18 +59,18 @@
 
 1. Extract **CIDR_Blocker.smx** to **/addons/sourcemod/plugins**
 2. Create **cidr_blocker** entry in your database.cfg
-3. (Optional | Recommended) Import https://github.com/RumbleFrog/CIDR-Blocker/blob/master/imports/datacenters.sql into `cidr_list` table
+3. (Optional | Recommended) Import https://github.com/CIDR-Blocker/CIDR-Blocker/blob/master/imports/datacenters.sql into `cidr_list` table
 
 
 # Download
 
-Download the latest version from the [release](https://github.com/RumbleFrog/CIDR-Blocker/releases) page
+Download the latest version from the [release](https://github.com/CIDR-Blocker/CIDR-Blocker/releases) page
 
 # Resources
 
 - ASN Blocklist - https://www.enjen.net/asn-blocklist/
 
-- Pre-made SQL script of most datacenters - https://github.com/RumbleFrog/CIDR-Blocker/blob/master/imports/datacenters.sql
+- Pre-made SQL script of most datacenters - https://github.com/CIDR-Blocker/CIDR-Blocker/blob/master/imports/datacenters.sql
 
 # License
 
