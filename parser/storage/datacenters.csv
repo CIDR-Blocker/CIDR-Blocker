@@ -298,6 +298,7 @@
 31.170.160.0,31.170.167.255,main-hosting.com,http://main-hosting.com/
 31.171.128.0,31.171.135.255,Netrouting,http://www.netrouting.com/
 31.172.240.0,31.172.255.255,Tagadab,http://tagadab.com/
+31.177.95.0,31.177.95.255,RU-CENTER,https://www.nic.ru/en/
 31.184.192.0,31.184.199.255,Petersburg Internet Network ltd.,http://pinspb.ru/
 31.184.242.0,31.184.242.255,mrhost.biz,http://mrhost.biz/
 31.185.104.0,31.185.111.255,nbiserv.de,http://nbiserv.de/
@@ -559,6 +560,7 @@
 46.23.72.0,46.23.79.255,VPS.net,https://www.vps.net/
 46.28.104.0,46.28.111.255,wedos,http://www.wedos.com/
 46.29.248.0,46.29.255.255,webexxpurts.com,http://webexxpurts.com/
+46.30.46.0,46.30.46.255,eurobyte,https://eurobyte.ru/
 46.31.184.0,46.31.191.255,basefarm.com,http://basefarm.com/
 46.32.224.0,46.32.255.255,Webfusion,http://www.webfusion.com/
 46.33.64.0,46.33.77.255,Akamai,http://akamai.com/
@@ -626,6 +628,7 @@
 50.116.0.0,50.116.63.255,Linode,http://www.linode.com/
 50.116.64.0,50.116.127.255,WebsiteWelcome.com,http://www.websitewelcome.com/
 50.117.0.0,50.117.127.255,EGIHosting.com,http://www.egihosting.com/
+51.15.0.0,51.15.255.255,Online.net,https://www.online.net/en
 51.136.0.0,51.136.3.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 51.136.8.0,51.136.41.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 51.136.48.0,51.136.63.255,Microsoft Azure,http://www.windowsazure.com/en-us/
@@ -1912,6 +1915,7 @@
 82.211.0.0,82.211.63.255,accelerated.de,http://accelerated.de/
 83.98.128.0,83.98.128.255,Flexwebhosting.nl,http://www.flexwebhosting.nl/
 83.136.80.0,83.136.87.255,myLoc,http://www.myloc.de/
+83.136.248.0,83.136.255.255,UpCloud,https://www.upcloud.com/
 83.137.144.0,83.137.151.255,duocast,http://duocast.nl/
 83.138.128.0,83.138.191.255,Rackspace,http://www.rackspace.com/
 83.142.224.0,83.142.231.255,iomart Hosting Ltd,http://www.rapidswitch.com/
@@ -1999,9 +2003,13 @@
 89.18.180.0,89.18.180.255,Flexwebhosting.nl,http://www.flexwebhosting.nl/
 89.19.6.112,89.19.6.119,Ares Hosting,http://areshosting.com/
 89.21.0.0,89.21.31.255,Telecity Group,http://www.ukgrid.net/
+89.32.120.0,89.32.123.255,XT Global Networks,https://xtglobal.vg/
 89.32.144.0,89.32.151.255,Elvsoft,http://www.elvsoft.com/
+89.32.176.0,89.32.183.255,XT Global Networks,https://xtglobal.vg/
+89.34.96.0,89.34.99.255,Zare,https://zare.com/
 89.34.237.0,89.34.237.255,Zservers Romania,https://zetservers.com/
 89.36.21.0,89.36.21.255,simpliq.com,http://www.simpliq.com/
+89.42.144.0,89.42.147.255,XT Global Networks,https://xtglobal.vg/
 89.45.192.0,89.45.199.255,xservers.ro,http://www.xservers.ro/
 89.47.16.0,89.47.31.255,everhost.ro,http://everhost.ro/
 89.106.0.0,89.106.31.255,Grid Telekom,http://grid.com.tr/
@@ -2068,6 +2076,7 @@
 91.210.104.0,91.210.107.255,HostKey.ru,http://www.hostkey.ru/
 91.210.188.0,91.210.191.255,Ekvia,http://ekvia.com/
 91.211.116.0,91.211.119.255,0x2A Datacenter,http://0x2a.com.ua/
+91.211.244.0,91.211.247.255,VPSnet,https://www.vpsnet.com/lt
 91.212.229.0,91.212.229.255,WorldStream,http://www.worldstream.nl/
 91.213.8.0,91.213.8.255,justhost.in.ua,http://www.justhost.in.ua/
 91.213.195.0,91.213.195.255,tilaa,http://www.tilaa.nl/
@@ -2100,6 +2109,7 @@
 91.233.249.0,91.233.249.255,Voxility,https://www.voxility.com/
 91.234.22.0,91.234.22.255,T-N Media,http://t-n-media.de/
 91.237.52.0,91.237.52.255,Biznes-Host.pl,http://biznes-host.pl/
+91.239.215.0,91.239.215.255,Apollon,http://apollon-server.ru/
 91.239.232.0,91.239.235.255,hostpro.ua,http://hostpro.ua/
 91.241.60.0,91.241.63.255,kylos.pl,http://www.kylos.pl/
 91.250.80.0,91.250.87.255,Host Europe,http://www.hosteurope.de/
@@ -2155,6 +2165,7 @@
 94.76.192.0,94.76.255.255,BlueConnex,http://www.simplytransit.net/
 94.100.16.0,94.100.31.255,Swiftway,http://swiftway.net/
 94.101.80.0,94.101.95.255,Radore Hosting,http://as42926.net/
+94.102.4.0,94.102.4.255,Netinternet,https://www.netinternet.com.tr/
 94.102.48.0,94.102.48.150,Ecatel,http://ecatel.net/
 94.102.48.161,94.102.48.255,Ecatel,http://ecatel.net/
 94.102.52.0,94.102.56.255,Ecatel,http://ecatel.net/
@@ -2312,6 +2323,7 @@
 104.47.200.0,104.47.215.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 104.130.64.0,104.130.223.255,Rackspace,http://www.rackspace.com/
 104.131.0.0,104.131.255.255,DigitalOcean USA,https://www.digitalocean.com/
+104.143.0.0,104.143.15.255,Versaweb,https://versaweb.com/
 104.154.0.0,104.155.255.255,Google App Engine,https://cloud.google.com/appengine
 104.156.80.0,104.156.95.255,Fastly,https://www.fastly.com/
 104.156.224.0,104.156.255.255,Choopa,https://www.choopa.com/
@@ -2343,6 +2355,7 @@
 104.223.0.0,104.223.127.255,QuadraNet,https://www.quadranet.com/
 104.233.64.0,104.233.127.255,KW Datacenter CA,http://www.kwdatacentre.com/
 104.238.128.0,104.238.191.255,Choopa,https://www.choopa.com/
+104.238.192.0,104.238.239.255,Versaweb,https://versaweb.com/
 104.239.192.0,104.239.223.255,Rackspace,http://www.rackspace.com/
 104.245.96.0,104.245.103.255,VolumeDrive,http://volumedrive.com/
 104.255.64.0,104.255.71.255,Volume Drive,http://volumedrive.com
@@ -2482,6 +2495,7 @@
 131.0.72.0,131.0.75.255,Cloudflare Inc,https://www.cloudflare.com/
 134.0.24.0,134.0.31.255,TwooIT,http://www.twooit.de/
 134.19.176.0,134.19.191.255,serverboost.nl,http://serverboost.nl/
+134.119.216.166,134.119.216.167,Velia,https://www.velia.net/
 134.170.192.0,134.170.199.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 134.255.192.0,134.255.255.255,Optimate Server,http://optimate-server.de/
 137.116.0.0,137.116.0.63,Microsoft Azure,http://www.windowsazure.com/en-us/
@@ -2499,6 +2513,8 @@
 138.91.128.48,138.91.129.79,Microsoft Azure,http://www.windowsazure.com/en-us/
 138.91.136.0,138.91.199.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 138.91.224.0,138.91.255.255,Microsoft Azure,http://www.windowsazure.com/en-us/
+138.197.0.0,138.197.255.255,DigitalOcean,https://www.digitalocean.com/
+139.162.0.0,139.162.255.255,Linode,http://www.linode.com/
 141.0.160.0,141.0.167.255,NuFuture Ltd,http://www.nublue.co.uk/
 141.101.64.0,141.101.127.255,Cloudflare Inc,https://www.cloudflare.com/
 141.105.64.0,141.105.71.255,HostKey,http://www.hostkey.com/
@@ -2660,6 +2676,7 @@
 169.56.64.0,169.56.159.255,SoftLayer,http://www.softlayer.com/
 169.57.0.0,169.57.255.255,SoftLayer,http://www.softlayer.com/
 172.64.0.0,172.71.255.255,Cloudflare Inc,https://www.cloudflare.com/
+172.96.128.0,172.96.135.255,Versaweb,https://versaweb.com/
 172.98.64.0,172.98.95.255,Total Server Solutions,http://totalserversolutions.com/
 172.111.64.0,172.111.127.255,Fastly,https://www.fastly.com/
 172.122.0.0,172.123.255.255,KW Datacenter CA,http://www.kwdatacentre.com/
@@ -2763,6 +2780,7 @@
 176.65.64.0,176.65.71.255,The Bunker,http://www.thebunker.net/
 176.67.160.0,176.67.175.255,UK2 Group,http://www.uk2.net/
 176.74.160.0,176.74.191.255,PEER 1,http://www.peer1.com/
+176.121.14.0,176.121.14.255,General Servers,https://general-servers.com/
 176.126.240.0,176.126.247.255,BHost Inc,https://www.bhost.net/
 176.227.192.120,176.227.192.127,Redstation Limited,http://redstation.com/
 176.227.195.0,176.227.195.7,Redstation Limited,http://redstation.com/
@@ -2926,19 +2944,25 @@
 185.14.194.0,185.14.194.127,Atomohost,http://www.atomohost.com/
 185.17.184.0,185.17.187.255,Leaseweb,http://www.leaseweb.com/
 185.19.218.152,185.19.218.159,Velia,http://www.velia.net/
+185.20.136.0,185.20.139.255,UpCloud,https://www.upcloud.com/
 185.22.172.0,185.22.172.255,Veesp,https://veesp.com/en/
+185.26.48.0,185.26.51.255,UpCloud,https://www.upcloud.com/
 185.27.236.0,185.27.236.255,3W Infra,https://ccc.3winfra.com/
 185.28.193.0,185.28.193.255,Regtons CZ,https://regtons.com/en/
 185.29.8.0,185.29.8.255,DataClub,https://www.dataclub.biz/
 185.31.16.0,185.31.19.255,Fastly,https://www.fastly.com/
 185.32.216.0,185.32.219.255,DigiCube,http://digicube.fr/
+185.34.52.0,185.34.55.255,VPSnet,https://www.vpsnet.com/lt
 185.36.100.0,185.36.100.255,go4cloud,http://go4cloud.com/
 185.38.12.0,185.38.15.255,yisp Netherlands,http://yisp.nl/
+185.38.148.0,185.38.151.255,Zare,https://zare.com/
 185.40.4.0,185.40.4.255,Hostgrad,http://hostgrad.ru/
+185.44.76.0,185.44.79.255,Zare,https://zare.com/
 185.47.60.0,185.47.63.255,BHost Inc,https://www.bhost.net/
 185.48.120.0,185.48.123.255,Amazon AWS,http://www.amazon.com/aws/
 185.62.190.0,185.62.191.255,BlazingFast,https://blazingfast.io/
 185.68.180.128,185.68.180.255,Internet Unie,https://iu.nl/
+185.80.128.0,185.80.131.255,VPSnet,https://www.vpsnet.com/lt
 185.86.148.0,185.86.149.255,Yourserver Sweden,https://www.yourserver.se/
 185.86.151.0,185.86.151.255,Yourserver Latvia,https://www.yourserver.se/
 185.100.84.0,185.100.85.255,FlokiNET Romania,https://www.flokinet.is/en/
