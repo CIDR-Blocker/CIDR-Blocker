@@ -1826,6 +1826,7 @@
 78.46.0.0,78.47.255.255,Hetzner Online AG,http://www.hetzner.de/
 78.108.176.0,78.108.191.255,Yeshost,http://yeshost.ru/
 78.109.16.0,78.109.31.255,hosting.ua,http://hosting.ua/
+78.110.48.0,78.110.55.255,Hosting Telesystems,https://www.hts.ru/
 78.110.160.0,78.110.175.255,UK Dedicated Servers LTD,http://ukservers.com/
 78.129.128.0,78.129.255.255,iomart Hosting Ltd,http://www.rapidswitch.com/
 78.136.0.0,78.136.63.255,Rackspace,http://www.rackspace.com/
@@ -2907,7 +2908,6 @@
 182.174.0.0,182.175.255.255,21vianet,http://21vianet.com/
 183.81.160.0,183.81.167.255,IP ServerOne,http://ipserverone.com/
 183.84.0.0,183.85.255.255,21vianet,http://21vianet.com/
-184.22.0.0,184.22.255.255,hostnoc,http://www.hostnoc.net/
 184.24.0.0,184.31.255.255,Akamai,http://akamai.com/
 184.50.0.0,184.51.255.255,Akamai,http://akamai.com/
 184.72.0.0,184.73.255.255,Amazon AWS,http://www.amazon.com/aws/
@@ -3237,6 +3237,7 @@
 194.176.118.0,194.176.118.255,leaderhost.ru,http://leaderhost.ru/
 194.177.20.0,194.177.23.255,Flops,https://flops.ru/
 194.187.164.0,194.187.167.255,accelerated.de,http://accelerated.de/
+194.247.60.0,194.247.60.255,kievhosting,http://kiev-hosting.com/
 195.2.254.0,195.2.255.255,superhost.pl,http://superhost.pl/
 195.12.48.0,195.12.51.255,OpenHosting UK Internet Solutions,http://openhosting.co.uk/
 195.20.155.0,195.20.155.255,host-it.co.uk,http://www.host-it.co.uk/
