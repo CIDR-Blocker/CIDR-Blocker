@@ -97,7 +97,7 @@
 23.80.0.0,23.83.255.255,Ubiquity Server Solutions,http://www.ubiquityservers.com/
 23.90.0.0,23.90.63.255,infinitie.net,http://www.serverhub.com/
 23.91.0.0,23.91.31.255,Psychz Networks,http://psychz.net/
-23.91.70.48,23.91.70.79,Arvixe,https://www.arvixe.com/
+23.91.64.0,23.91.79.255,A Small Orange,https://asmallorange.com/
 23.91.96.0,23.91.111.255,Zenlayer,http://www.zenlayer.com/
 23.91.112.0,23.91.127.255,Arvixe,http://www.arvixe.com/
 23.92.16.0,23.92.31.255,Linode,http://www.linode.com/
@@ -1097,6 +1097,7 @@
 77.120.108.128,77.120.108.191,Volia Datacenter,http://www.hosting-service.com.ua
 77.221.128.0,77.221.143.255,Infobox,https://infobox.ru/
 77.222.40.0,77.222.43.255,SpaceWeb,https://sweb.ru/
+77.232.68.0,77.232.69.255,Servage,https://www.servage.net/
 77.235.32.0,77.235.63.255,EuroVPS,http://eurovps.com/
 77.237.228.0,77.237.231.255,servhost.de,http://servhost.de/
 77.237.241.128,77.237.241.255,webhoster.de,http://webhoster.de/
@@ -1158,6 +1159,7 @@
 80.76.144.0,80.76.159.255,basefarm.com,http://basefarm.com/
 80.77.80.0,80.77.92.255,Hqhost.net,http://hqhost.net/en/index.html
 80.77.98.32,80.77.98.63,Akamai,http://akamai.com/
+80.78.250.0,80.78.250.255,Reg.ru,https://www.reg.ru/
 80.79.16.0,80.79.31.255,Master Internet S.R.O.,http://www.master.cz/
 80.80.224.0,80.80.239.255,Safe Host SA,http://safehost.net/
 80.82.65.0,80.82.65.255,Ecatel,http://ecatel.net/
@@ -1168,6 +1170,8 @@
 80.90.192.0,80.90.207.255,Webfusion,http://www.webfusion.com/
 80.93.80.0,80.93.90.255,IKOULA,https://www.ikoula.com/en
 80.93.160.0,80.93.175.255,host-it.co.uk,http://www.host-it.co.uk/
+80.93.177.0,80.93.177.255,Selectel,https://selectel.ru/en/
+80.93.187.0,80.93.187.255,Selectel,https://selectel.ru/en/
 80.94.128.0,80.94.143.255,ConnectingBytse Gbmh,http://www.connectingbytes.de/
 80.95.144.0,80.95.159.255,LINK11 Gmbh,http://www.link11.de/
 80.190.0.0,80.190.255.255,IP Exchange GmbH,http://www.ip-exchange.de/
@@ -1260,7 +1264,7 @@
 85.159.64.8,85.159.64.15,Ares Hosting,http://areshosting.com/
 85.159.64.40,85.159.64.47,Peron Hosting,http://peronhost.com/
 85.159.237.0,85.159.237.255,NFOrce,https://www.nforce.com/
-85.195.99.34,85.195.99.35,velia,http://www.velia.net/
+85.195.99.34,85.195.99.35,Velia,https://www.velia.net/
 85.214.0.0,85.215.255.255,Strato,http://www.strato.de
 85.232.32.0,85.232.63.255,Titan Internet Ltd,http://www.titaninternet.co.uk/index.cfm
 85.234.128.0,85.234.159.255,BlueConnex,http://www.simplytransit.net/
@@ -1303,6 +1307,7 @@
 89.19.6.112,89.19.6.119,Ares Hosting,http://areshosting.com/
 89.21.0.0,89.21.31.255,Telecity Group,http://www.ukgrid.net/
 89.31.56.0,89.31.63.255,Unithost,http://www.unithost.nl/
+89.31.72.0,89.31.75.255,Genesys Informatica,https://gif.it/
 89.32.120.0,89.32.123.255,XT Global Networks,https://xtglobal.vg/
 89.32.144.0,89.32.151.255,Elvsoft,http://www.elvsoft.com/
 89.32.176.0,89.32.183.255,XT Global Networks,https://xtglobal.vg/
@@ -1316,6 +1321,7 @@
 89.47.16.0,89.47.31.255,everhost.ro,http://everhost.ro/
 89.106.0.0,89.106.31.255,Grid Telekom,http://grid.com.tr/
 89.107.16.0,89.107.23.255,Telecity Group,http://www.ukgrid.net/
+89.108.121.0,89.108.121.255,Reg.ru,https://www.reg.ru/
 89.111.176.0,89.111.179.255,r01,https://r01.ru/
 89.145.90.0,89.145.90.255,Gyron,http://www.gyron.net/
 89.149.192.0,89.149.255.255,Leaseweb,http://www.leaseweb.com/
@@ -1450,6 +1456,7 @@
 93.127.128.0,93.127.255.255,Star-Hosting e.K.,http://star-hosting.de/
 93.168.0.0,93.169.255.255,everhost,http://everhost.co/
 93.170.128.0,93.170.131.255,Adman,https://adman.com/
+93.170.168.0,93.170.169.255,Zomro,http://zomro.com/
 93.171.200.0,93.171.203.255,mirahost,http://mirahub.com/
 93.174.88.0,93.174.90.255,Ecatel,http://www.ecatel.net/
 93.174.93.0,93.174.93.255,Ecatel,http://www.ecatel.net/
@@ -1464,6 +1471,7 @@
 93.190.136.0,93.190.143.255,WorldStream,http://www.worldstream.nl/
 94.23.0.0,94.23.255.255,OVH,http://www.ovh.co.uk/
 94.24.0.0,94.24.127.255,xservers.ro,http://www.xservers.ro/
+94.73.147.0,94.73.147.255,Natro,https://www.natro.com/
 94.75.192.0,94.75.255.255,Leaseweb,http://www.leaseweb.com/
 94.76.128.0,94.76.191.255,ServiHosting Networks S.L.,http://servihosting.es
 94.76.192.0,94.76.255.255,BlueConnex,http://www.simplytransit.net/
@@ -1539,6 +1547,7 @@
 95.172.0.0,95.172.31.255,Tagadab,http://tagadab.com/
 95.174.0.0,95.174.31.255,seeweb.it,http://seeweb.it/
 95.211.0.0,95.211.255.255,Leaseweb,http://www.leaseweb.com/
+95.215.44.0,95.215.47.255,Yourserver,https://yourserver.se
 95.215.60.0,95.215.63.255,sologigabit.com,http://www.sologigabit.com/en/Dedicated-Servers
 96.6.0.0,96.7.255.255,Akamai,http://akamai.com/
 96.8.112.0,96.8.127.255,Velocity Servers,http://www.velocity-servers.net/
@@ -1717,6 +1726,7 @@
 109.237.16.0,109.237.31.255,Telecity Group,http://www.ukgrid.net/
 109.237.128.0,109.237.143.255,alfahosting.de,http://alfahosting.de/
 109.238.48.0,109.238.63.255,Solido Hosting A/S,http://solidohosting.com/
+109.248.32.0,109.248.33.255,Zomro,http://zomro.com/
 110.4.40.0,110.4.47.255,Exa Bytes Network Sdn Bhd,http://exabytes.com/
 111.91.236.0,111.91.239.255,ReadySpace,http://www.readyspace.com.sg/en/
 111.221.29.0,111.221.31.255,Microsoft Azure,http://www.windowsazure.com/en-us/
@@ -1741,6 +1751,7 @@
 117.53.152.0,117.53.155.255,Exa Bytes Network Sdn Bhd,http://exabytes.com/
 117.120.0.0,117.120.7.255,ReadySpace,http://www.readyspace.com.sg/en/
 117.121.240.0,117.121.247.255,GPLHost,https://www.gplhost.com/
+118.24.0.0,118.25.255.255,Tencent Cloud,https://intl.cloud.tencent.com/
 118.127.0.0,118.127.63.255,Dedicated Servers,http://dedicatedservers.net.au/
 118.139.160.0,118.139.191.255,GoDaddy.com Inc,http://www.godaddy.com/
 118.214.0.0,118.215.255.255,Akamai,http://akamai.com/
@@ -2233,7 +2244,7 @@
 185.14.184.0,185.14.187.255,DigitalOcean Europe,https://www.digitalocean.com/
 185.14.194.0,185.14.194.127,Atomohost,http://www.atomohost.com/
 185.17.184.0,185.17.187.255,Leaseweb,http://www.leaseweb.com/
-185.19.218.152,185.19.218.159,Velia,http://www.velia.net/
+185.19.218.152,185.19.218.159,Velia,https://www.velia.net/
 185.20.136.0,185.20.139.255,UpCloud,https://www.upcloud.com/
 185.22.152.0,185.22.153.255,JustHost,https://www.justhost.ru
 185.22.172.0,185.22.172.255,Veesp,https://veesp.com/en/
@@ -2336,6 +2347,7 @@
 191.238.80.0,191.238.93.255,Microsoft Azure,http://www.windowsazure.com/en-us/
 191.238.96.0,191.239.197.15,Microsoft Azure,http://www.windowsazure.com/en-us/
 191.239.200.0,191.239.255.255,Microsoft Azure,http://www.windowsazure.com/en-us/
+191.252.0.0,191.252.255.255,Locaweb,https://www.locaweb.com.br/
 192.3.0.0,192.3.255.255,ColoCrossing,http://www.colocrossing.com/
 192.30.136.0,192.30.139.255,Input Output Flood LLC,http://ioflood.com/
 192.34.56.0,192.34.63.255,DigitalOcean USA,https://www.digitalocean.com/
@@ -2575,6 +2587,7 @@
 198.52.96.0,198.52.127.255,multacom.com,http://multacom.com/
 198.52.128.0,198.52.255.255,avantehosting.net,https://avantehosting.net/
 198.55.96.0,198.55.127.255,QuadraNet,https://quadranet.com/
+198.57.128.0,198.57.255.255,The Endurance International Group Inc,http://www.enduranceinternational.com/
 198.58.96.0,198.58.127.255,Linode,http://www.linode.com/
 198.61.128.0,198.61.255.255,Rackspace,http://www.rackspace.com/
 198.71.48.0,198.71.63.255,1&1 Internet,http://www.1and1.com/
@@ -3068,6 +3081,7 @@
 211.152.32.0,211.152.63.255,21vianet,http://21vianet.com/
 212.1.208.0,212.1.215.255,main-hosting.com,http://main-hosting.com/
 212.7.192.0,212.7.223.255,Dediserv,http://www.dediserv.eu
+212.8.245.0,212.8.245.255,Zomro,http://zomro.com/
 212.19.160.0,212.19.191.255,Netplus Communication,http://www.netplus.fr/
 212.21.64.0,212.21.95.255,D-hosting Germany,http://www.d-hosting.de/
 212.25.160.0,212.25.191.255,seeweb.it,http://seeweb.it/
@@ -3258,6 +3272,7 @@
 217.72.240.0,217.72.255.255,Datapipe,http://www.datapipe.com/
 217.77.176.0,217.77.191.255,Titan Internet Ltd,http://www.titaninternet.co.uk/index.cfm
 217.78.0.0,217.78.15.255,DigiWeb,http://dediserve.com/
+217.107.34.0,217.107.34.255,Avguro,http://avguro.ru/
 217.107.216.0,217.107.216.255,RTComm,http://rtcomm.ru/
 217.114.208.0,217.114.208.255,Keyweb Germany Berlin,https://www.keyweb.de/en/
 217.115.128.0,217.115.159.255,Host Europe,http://www.hosteurope.de/
