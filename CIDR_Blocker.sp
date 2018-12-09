@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.1.5"
+#define PLUGIN_VERSION "1.1.6"
 
 #include <sourcemod>
 
@@ -165,7 +165,7 @@ public Action CmdWhitelist(int client, int args)
 {
 	if (args < 1)
 	{
-		ReplyToCommand(client, "sm_cidir_whitelist <steamid/ip> <comment>");
+		ReplyToCommand(client, "sm_cidr_whitelist <steamid/ip> <comment>");
 		return Plugin_Handled;
 	}
 	
