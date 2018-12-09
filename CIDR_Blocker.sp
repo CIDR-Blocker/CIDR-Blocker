@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.1.4"
+#define PLUGIN_VERSION "1.1.5"
 
 #include <sourcemod>
 
@@ -122,6 +122,9 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 public void OnClientPostAdminCheck(int client)
 {
 	if (!WhitelistLoaded)
+		return;
+		
+	if (!IsClientConnected(client))
 		return;
 	
 	if (!IsInWhitelist(client))
