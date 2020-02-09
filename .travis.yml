@@ -1,7 +1,7 @@
 language: c
 
 env:
-    - SMVERSION=1.8
+    - SMVERSION=1.10
 
 matrix:
     fast_finish: true
