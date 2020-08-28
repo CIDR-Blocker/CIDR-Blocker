@@ -34,6 +34,7 @@ Database hDB;
 enum WhitelistType {
 	WhitelistSteam,
 	WhitelistIP,
+	WhitelistInvalid,
 }
 
 enum struct WhitelistEntry {
@@ -66,7 +67,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
-	hDB.Connect(SQL_OnDatabaseConnect, "cidr_blocker");
+	Database.Connect(SQL_OnDatabaseConnect, "cidr_blocker");
 
 	CreateConVar("sm_cidr_version", PLUGIN_VERSION, "CIDR Blocker Version", FCVAR_REPLICATED | FCVAR_SPONLY | FCVAR_DONTRECORD | FCVAR_NOTIFY);
 	
@@ -112,14 +113,20 @@ public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[]
 	if (results == null)
 		SetFailState("Failed to fetch whitelist: %s", error); 
 
-	char type[32], identity[32];
+	char type[32];
+
+	WhitelistEntry w_temp;
 	
 	for (int i = 1; i <= results.RowCount; i++)
 	{
 		results.FetchRow();
 		
-		results.FetchString(0, type, sizeof(type)); //TYPE
-		results.FetchString(1, identity, sizeof(identity)); //IDENTITY
+		results.FetchString(0, type, sizeof(type));
+		results.FetchString(1, w_temp.identity, sizeof(WhitelistEntry::identity));
+
+		w_temp.type = ToWhitelistType(type);
+
+		Whitelist.PushArray(w_temp);
 	}
 }
 
@@ -130,6 +137,8 @@ WhitelistType ToWhitelistType(const char[] type)
 
 	if (StrEqual(type, "ip"))
 		return WhitelistIP;
+
+	return WhitelistInvalid;
 }
 
 public void OnClientPostAdminCheck(int client)
@@ -179,7 +188,7 @@ public Action CmdWhitelist(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Escaped_ID[65], Escaped_Comment[511], Type[32];
+	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Type[32];
 	
 	GetCmdArg(1, ID, sizeof ID);
 	
@@ -191,10 +200,7 @@ public Action CmdWhitelist(int client, int args)
 		
 	Type = (StrContains(ID, ".") != -1) ? "ip" : "steam";
 	
-	hDB.Escape(ID, Escaped_ID, sizeof Escaped_ID);
-	hDB.Escape(Comment, Escaped_Comment, sizeof Escaped_Comment);
-	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES ('%s', '%s', '%s')", Type, Escaped_ID, Escaped_Comment);
+	hDB.Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES (%s, %s, %s)", Type, ID, Comment);
 	
 	hDB.Query(SQL_OnCmdWhitelist, Insert_Query);
 	
@@ -208,8 +214,6 @@ public void SQL_OnCmdWhitelist(Database db, DBResultSet results, const char[] er
 		LogError("Failed to insert whitelist: %s", error); 
 		return;
 	}
-	
-	LoadToWhitelist();
 }
 
 void LogReject(int client, const char[] CIDR)
@@ -239,16 +243,21 @@ bool IsInWhitelist(int client)
 	
 	GetClientAuthId(client, AuthId_Steam2, SteamID, sizeof SteamID);
 	GetClientIP(client, IP, sizeof IP);
-	
-	for (int i = 1; i <= WhitelistRowCount; i++)
+
+	// In-memory whitelist is designed for small-case scenarios
+	// For large cases, refer to the forward for determining action upon result
+
+	WhitelistEntry entry;
+
+	for (int i = 0; i < Whitelist.Length; i += 1)
 	{
-		if (StrEqual(Whitelist[i][0], "steam"))
-			if (StrEqual(Whitelist[i][1], SteamID))
-				return true;
-		
-		if (StrEqual(Whitelist[i][0], "ip"))
-			if (StrEqual(Whitelist[i][1], IP))
-				return true;
+		Whitelist.GetArray(i, entry);
+
+		if (entry.type == WhitelistSteam && StrEqual(entry.identity, SteamID))
+			return true;
+
+		if (entry.type == WhitelistIP && StrEqual(entry.identity, IP))
+			return true;
 	}
 	
 	return false;
