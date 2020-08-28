@@ -19,7 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.1.6"
+#define PLUGIN_VERSION "1.1.7"
+
+#define LIST_CREATE_SQL "CREATE TABLE IF NOT EXISTS `cidr_list` ( `id` INT NOT NULL AUTO_INCREMENT , `cidr` VARCHAR(32) NOT NULL UNIQUE , `kick_message` VARCHAR(64) NOT NULL DEFAULT 'IP BLOCKED' , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;"
+#define WHITELIST_CREATE_SQL "CREATE TABLE IF NOT EXISTS `cidr_whitelist` ( `id` INT NOT NULL AUTO_INCREMENT , `type` ENUM('steam','ip') NOT NULL , `identity` VARCHAR(32) NOT NULL , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;"
+#define LOG_CREATE_SQL "CREATE TABLE IF NOT EXISTS `cidr_log` ( `id` INT NOT NULL AUTO_INCREMENT , `ip` VARBINARY(16) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `cidr` VARCHAR(32) NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`steamid`), INDEX (`ip`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;"
 
 #include <sourcemod>
 
@@ -27,11 +31,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Database hDB;
 
-char Whitelist[512][2][32]; //0:Type (steam, ip), 1:Identity
+enum WhitelistType {
+	WhitelistSteam,
+	WhitelistIP,
+	WhitelistInvalid,
+}
 
-int WhitelistRowCount;
+enum struct WhitelistEntry {
+	WhitelistType type;
 
-bool WhitelistLoaded;
+	char identity[32];
+}
+
+ArrayList Whitelist;
+
 bool Log;
 
 ConVar cLog;
@@ -46,35 +59,16 @@ public Plugin myinfo =
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
-{
-	hDB = SQL_Connect("cidr_blocker", true, error, err_max);
-	
-	if (hDB == INVALID_HANDLE)
-		return APLRes_Failure;
-	
-	char ListCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_list` ( `id` INT NOT NULL AUTO_INCREMENT , `cidr` VARCHAR(32) NOT NULL UNIQUE , `kick_message` VARCHAR(64) NOT NULL DEFAULT 'IP BLOCKED' , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
-	char WhitelistCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_whitelist` ( `id` INT NOT NULL AUTO_INCREMENT , `type` ENUM('steam','ip') NOT NULL , `identity` VARCHAR(32) NOT NULL , `comment` VARCHAR(255) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
-	char LogCreateSQL[] = "CREATE TABLE IF NOT EXISTS `cidr_log` ( `id` INT NOT NULL AUTO_INCREMENT , `ip` VARBINARY(16) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `cidr` VARCHAR(32) NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`steamid`), INDEX (`ip`), INDEX (`cidr`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;";
-	
-	SQL_SetCharset(hDB, "utf8mb4");
-			
-	hDB.Query(OnTableCreate, ListCreateSQL);
-	hDB.Query(OnTableCreate, WhitelistCreateSQL);
-	hDB.Query(OnTableCreate, LogCreateSQL);
-	
-	RegPluginLibrary("CIDR_Blocker");
+{	
+	RegPluginLibrary("cidr_blocker");
 
 	return APLRes_Success;
 }
 
-public void OnTableCreate(Database db, DBResultSet results, const char[] error, any pData)
-{
-	if (results == null)
-		SetFailState("Unable to create table: %s", error);
-}
-
 public void OnPluginStart()
 {
+	Database.Connect(SQL_OnDatabaseConnect, "cidr_blocker");
+
 	CreateConVar("sm_cidr_version", PLUGIN_VERSION, "CIDR Blocker Version", FCVAR_REPLICATED | FCVAR_SPONLY | FCVAR_DONTRECORD | FCVAR_NOTIFY);
 	
 	cLog = CreateConVar("sm_cidr_log", "1", "Enable blocked logging", FCVAR_NONE, true, 0.0, true, 1.0);
@@ -83,8 +77,30 @@ public void OnPluginStart()
 	cLog.AddChangeHook(OnLogChange);
 	
 	RegAdminCmd("sm_cidr_whitelist", CmdWhitelist, ADMFLAG_CHEATS);
-	
-	LoadToWhitelist();
+
+	Whitelist = new ArrayList(sizeof(WhitelistEntry));
+}
+
+public void SQL_OnDatabaseConnect(Database db, const char[] error, any data)
+{
+	if (db == null)
+		SetFailState("Database connection failure: %s", error);
+
+	hDB = db;
+
+	hDB.SetCharset("utf8mb4");
+
+	hDB.Query(SQL_OnCreateTable, LIST_CREATE_SQL);
+	hDB.Query(SQL_OnCreateTable, WHITELIST_CREATE_SQL);
+	hDB.Query(SQL_OnCreateTable, LOG_CREATE_SQL);
+
+	hDB.Query(SQL_OnLoadToWhitelist, "SELECT `type`, `identity` FROM `cidr_whitelist`");
+}
+
+public void SQL_OnCreateTable(Database db, DBResultSet results, const char[] error, any data)
+{
+	if (results == null)
+		SetFailState("Unable to create table: %s", error);
 }
 
 public void OnLogChange(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -92,38 +108,41 @@ public void OnLogChange(ConVar convar, const char[] oldValue, const char[] newVa
 	Log = cLog.BoolValue;
 }
 
-void LoadToWhitelist()
-{
-	char Select_Query[512];
-	
-	Format(Select_Query, sizeof Select_Query, "SELECT `type`, `identity` FROM `cidr_whitelist`");
-	
-	hDB.Query(SQL_OnLoadToWhitelist, Select_Query);
-}
-
 public void SQL_OnLoadToWhitelist(Database db, DBResultSet results, const char[] error, any pData)
 {
 	if (results == null)
 		SetFailState("Failed to fetch whitelist: %s", error); 
-		
-	WhitelistRowCount = results.RowCount;
+
+	char type[32];
+
+	WhitelistEntry w_temp;
 	
-	for (int i = 1; i <= WhitelistRowCount; i++)
+	for (int i = 1; i <= results.RowCount; i++)
 	{
 		results.FetchRow();
 		
-		results.FetchString(0, Whitelist[i][0], sizeof Whitelist[][]); //TYPE
-		results.FetchString(1, Whitelist[i][1], sizeof Whitelist[][]); //IDENTITY
+		results.FetchString(0, type, sizeof(type));
+		results.FetchString(1, w_temp.identity, sizeof(WhitelistEntry::identity));
+
+		w_temp.type = ToWhitelistType(type);
+
+		Whitelist.PushArray(w_temp);
 	}
-	
-	WhitelistLoaded = true;
+}
+
+WhitelistType ToWhitelistType(const char[] type)
+{
+	if (StrEqual(type, "steam"))
+		return WhitelistSteam;
+
+	if (StrEqual(type, "ip"))
+		return WhitelistIP;
+
+	return WhitelistInvalid;
 }
 
 public void OnClientPostAdminCheck(int client)
-{
-	if (!WhitelistLoaded)
-		return;
-		
+{		
 	if (!IsClientConnected(client))
 		return;
 	
@@ -169,7 +188,7 @@ public Action CmdWhitelist(int client, int args)
 		return Plugin_Handled;
 	}
 	
-	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Escaped_ID[65], Escaped_Comment[511], Type[32];
+	char ID[32], Comment[255], sArg[255], Insert_Query[1024], Type[32];
 	
 	GetCmdArg(1, ID, sizeof ID);
 	
@@ -181,10 +200,7 @@ public Action CmdWhitelist(int client, int args)
 		
 	Type = (StrContains(ID, ".") != -1) ? "ip" : "steam";
 	
-	hDB.Escape(ID, Escaped_ID, sizeof Escaped_ID);
-	hDB.Escape(Comment, Escaped_Comment, sizeof Escaped_Comment);
-	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES ('%s', '%s', '%s')", Type, Escaped_ID, Escaped_Comment);
+	hDB.Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_whitelist` (`type`, `identity`, `comment`) VALUES (%s, %s, %s)", Type, ID, Comment);
 	
 	hDB.Query(SQL_OnCmdWhitelist, Insert_Query);
 	
@@ -198,23 +214,19 @@ public void SQL_OnCmdWhitelist(Database db, DBResultSet results, const char[] er
 		LogError("Failed to insert whitelist: %s", error); 
 		return;
 	}
-	
-	LoadToWhitelist();
 }
 
 void LogReject(int client, const char[] CIDR)
 {
 	if (!Log) return;
 	
-	char Insert_Query[512], Name[32], Escaped_Name[65], IP[32], SteamID[32];
+	char Insert_Query[512], Name[32], IP[32], SteamID[32];
 	
 	GetClientName(client, Name, sizeof Name);
 	GetClientIP(client, IP, sizeof IP);
 	GetClientAuthId(client, AuthId_Steam2, SteamID, sizeof SteamID);
 	
-	hDB.Escape(Name, Escaped_Name, sizeof Escaped_Name);
-	
-	Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES ('%s', '%s', '%s', '%s')", IP, SteamID, Escaped_Name, CIDR);
+	hDB.Format(Insert_Query, sizeof Insert_Query, "INSERT INTO `cidr_log` (`ip`, `steamid`, `name`, `cidr`) VALUES (%s, %s, %s, %s'", IP, SteamID, Name, CIDR);
 	
 	hDB.Query(SQL_OnLogReject, Insert_Query);
 }
@@ -231,16 +243,21 @@ bool IsInWhitelist(int client)
 	
 	GetClientAuthId(client, AuthId_Steam2, SteamID, sizeof SteamID);
 	GetClientIP(client, IP, sizeof IP);
-	
-	for (int i = 1; i <= WhitelistRowCount; i++)
+
+	// In-memory whitelist is designed for small-case scenarios
+	// For large cases, refer to the forward for determining action upon result
+
+	WhitelistEntry entry;
+
+	for (int i = 0; i < Whitelist.Length; i += 1)
 	{
-		if (StrEqual(Whitelist[i][0], "steam"))
-			if (StrEqual(Whitelist[i][1], SteamID))
-				return true;
-		
-		if (StrEqual(Whitelist[i][0], "ip"))
-			if (StrEqual(Whitelist[i][1], IP))
-				return true;
+		Whitelist.GetArray(i, entry);
+
+		if (entry.type == WhitelistSteam && StrEqual(entry.identity, SteamID))
+			return true;
+
+		if (entry.type == WhitelistIP && StrEqual(entry.identity, IP))
+			return true;
 	}
 	
 	return false;
